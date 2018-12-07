@@ -1,0 +1,9 @@
+!.gitignore
+.idea/
+.DS_Store
+.vs/
+dist/*
+!dist/.gitkeep
+.vscode
+*/obj/*
+*/bin/*
