@@ -9,6 +9,19 @@ namespace apidemo
 {
     public class Database
     {
+        protected static Database _self = null;
+        public static Database Db
+        {
+            get
+            {
+                if (_self == null)
+                {
+                    _self = new Database();
+                }
+                return _self;
+            }
+        }
+
         protected const string DbName = "cs-api-demo";
 
         protected IMongoClient _client = null;
@@ -22,7 +35,7 @@ namespace apidemo
         }
 
         protected IMongoDatabase _db = null;
-        protected IMongoDatabase Db {
+        protected IMongoDatabase MongoDatabase {
             get {
                 if (_db == null) {
                     _db = MongoClient.GetDatabase(DbName);
@@ -35,7 +48,7 @@ namespace apidemo
         protected IMongoCollection<BsonDocument> Collection {
             get {
                 if (_collection == null) {
-                    _collection = Db.GetCollection<BsonDocument>("demo-collection");
+                    _collection = MongoDatabase.GetCollection<BsonDocument>("demo-collection");
                 }
                 return _collection;
             }
