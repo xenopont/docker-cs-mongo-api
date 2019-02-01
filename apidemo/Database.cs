@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-
 using MongoDB.Driver;
 using MongoDB.Bson;
+using apidemo.Models;
 
 namespace apidemo
 {
@@ -44,24 +44,23 @@ namespace apidemo
             }
         }
 
-        protected IMongoCollection<BsonDocument> _collection = null;
-        protected IMongoCollection<BsonDocument> Collection {
+        protected IMongoCollection<User> _collection = null;
+        protected IMongoCollection<User> Collection {
             get {
                 if (_collection == null) {
-                    _collection = MongoDatabase.GetCollection<BsonDocument>("demo-collection");
+                    _collection = MongoDatabase.GetCollection<User>("demo-collection");
                 }
                 return _collection;
             }
         }
 
-        public async Task<List<BsonDocument>> LoadDocumentsAsync() {
-            BsonDocument filter = new BsonDocument();
-            FindOptions options = new FindOptions {
-                MaxTime = TimeSpan.FromMilliseconds(200)
-            };
+        public async Task<List<User>> UserList() {
+            return await Collection.Find<User>(user => true).ToListAsync();
+        }
 
-            List<BsonDocument> list = await Collection.Find(filter, options).ToListAsync();
-            return list;
+        public async void Create(User doc)
+        {
+            await Collection.InsertOneAsync(doc);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Bson;
+using apidemo.Models;
 
 namespace apidemo.Controllers
 {
@@ -10,10 +11,17 @@ namespace apidemo.Controllers
     public class UsersController
     {
         [HttpGet]
-        public async Task<ActionResult<List<BsonDocument>>> UserList()
+        public async Task<ActionResult<List<User>>> UserList()
         {
-            List<BsonDocument> list = await Database.Db.LoadDocumentsAsync();
+            List<User> list = await Database.Db.UserList();
             return list;
+        }
+
+        [HttpPost]
+        public ActionResult<string> CreateUser([FromBody] User user)
+        {
+            Database.Db.Create(user);
+            return "OK";
         }
     }
 }
