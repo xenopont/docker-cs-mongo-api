@@ -1,8 +1,6 @@
-using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using MongoDB.Driver;
-using MongoDB.Bson;
 using apidemo.Models;
 
 namespace apidemo

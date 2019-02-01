@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MongoDB.Bson;
 using apidemo.Models;
 
 namespace apidemo.Controllers
