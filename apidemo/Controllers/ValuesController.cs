@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-using MongoDB.Driver;
 using MongoDB.Bson;
 
 namespace apidemo.Controllers
@@ -13,15 +12,24 @@ namespace apidemo.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        protected Database _db = null;
+        protected Database Db {
+            get {
+                if (_db == null) {
+                    _db = new Database();
+                }
+                return _db;
+            }
+        }
+
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public async Task<ActionResult<BsonDocument>> Get()
         {
-            var client = new MongoClient("mongodb://localhost:27017");
-            var database = client.GetDatabase("foo");
-            var collection = database.GetCollection<BsonDocument>("bar");
-
-            return new string[] { "value1", "value2" };
+            List<BsonDocument> list = await Db.LoadDocumentsAsync();
+            return new BsonDocument(new Dictionary<string, object>() {
+                { "ListCount", list.Count }
+            });
         }
 
         // GET api/values/5
