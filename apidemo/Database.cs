@@ -1,64 +1,28 @@
-using System.Threading.Tasks;
 using System.Collections.Generic;
-using MongoDB.Driver;
+using System.Threading.Tasks;
 using apidemo.Models;
+using MongoDB.Driver;
 
 namespace apidemo
 {
     public class Database
     {
-        protected static Database _self = null;
-        public static Database Db
-        {
-            get
-            {
-                if (_self == null)
-                {
-                    _self = new Database();
-                }
-                return _self;
-            }
-        }
+        private static Database _self;
+        public static Database Db => _self ?? (_self = new Database());
 
-        protected const string DbName = "cs-api-demo";
+        private const string DbName = "cs-api-demo";
 
-        protected IMongoClient _client = null;
-        protected IMongoClient MongoClient {
-            get {
-                if (_client == null) {
-                    _client = new MongoClient("mongodb://172.17.0.3:27017");
-                }
-                return _client;
-            }
-        }
+        private IMongoClient _client;
+        private IMongoClient MongoClient => _client ?? (_client = new MongoClient("mongodb://172.17.0.3:27017"));
 
-        protected IMongoDatabase _db = null;
-        protected IMongoDatabase MongoDatabase {
-            get {
-                if (_db == null) {
-                    _db = MongoClient.GetDatabase(DbName);
-                }
-                return _db;
-            }
-        }
+        private IMongoDatabase _db;
+        private IMongoDatabase MongoDatabase => _db ?? (_db = MongoClient.GetDatabase(DbName));
 
-        protected IMongoCollection<User> _collection = null;
-        protected IMongoCollection<User> Collection {
-            get {
-                if (_collection == null) {
-                    _collection = MongoDatabase.GetCollection<User>("demo-collection");
-                }
-                return _collection;
-            }
-        }
+        private IMongoCollection<User> _collection;
+        private IMongoCollection<User> Collection => _collection ?? (_collection = MongoDatabase.GetCollection<User>("demo-collection"));
 
-        public async Task<List<User>> UserList() {
-            return await Collection.Find<User>(user => true).ToListAsync();
-        }
+        public async Task<List<User>> UserList() => await Collection.Find(user => true).ToListAsync();
 
-        public async void Create(User doc)
-        {
-            await Collection.InsertOneAsync(doc);
-        }
+        public async void Create(User doc) => await Collection.InsertOneAsync(doc);
     }
 }

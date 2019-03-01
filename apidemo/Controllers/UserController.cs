@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using apidemo.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace apidemo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController
+    public class UserController
     {
         [HttpGet]
         public async Task<ActionResult<List<User>>> UserList()
