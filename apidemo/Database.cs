@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using apidemo.Models;
+using ApiDemo.Models;
 using MongoDB.Driver;
 
-namespace apidemo
+namespace ApiDemo
 {
     public class Database
     {

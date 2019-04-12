@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using apidemo.Models;
+using ApiDemo.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace apidemo.Controllers
+namespace ApiDemo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
