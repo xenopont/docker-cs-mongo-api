@@ -17,10 +17,11 @@ namespace ApiDemo.Controllers
         }
 
         [HttpPost]
-        public ActionResult<string> CreateUser([FromBody] User user)
+        public ActionResult<string> CreateUser(UserPostRequest request)
         {
-            Database.Db.Create(user);
-            return "OK";
+            
+            //Database.Db.Create(user);
+            return request.ToString();
         }
     }
 }

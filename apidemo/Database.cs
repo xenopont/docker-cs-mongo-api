@@ -13,7 +13,7 @@ namespace ApiDemo
         private const string DbName = "cs-api-demo";
 
         private IMongoClient _client;
-        private IMongoClient MongoClient => _client ?? (_client = new MongoClient("mongodb://172.17.0.3:27017"));
+        private IMongoClient MongoClient => _client ?? (_client = new MongoClient("mongodb://172.17.0.4:27017"));
 
         private IMongoDatabase _db;
         private IMongoDatabase MongoDatabase => _db ?? (_db = MongoClient.GetDatabase(DbName));
