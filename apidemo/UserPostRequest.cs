@@ -4,21 +4,9 @@ namespace ApiDemo
 {
     public class UserPostRequest
     {
-        private string _name = "";
-        private string _password = "";
-        private DateTime _birthDate = DateTime.MaxValue;
-        
-        public string name
-        {
-            get => _name;
-            set => _name = value;
-        }
-
-        public string password
-        {
-            get => _password;
-            set => _password = value;
-        }
+        public string Name { get; set; } = "";
+        public string Password { get; set; } = "";
+        public string BirthDate { get; set; } = DateTime.MaxValue.ToString();
 
         public bool Validate()
         {
@@ -28,7 +16,7 @@ namespace ApiDemo
 
         public override string ToString()
         {
-            return "Name: " + _name + "; Pass: " + _password + "; Birthdate: " + _birthDate;
+            return "Name: " + Name + "; Pass: " + Password + "; Birthdate: " + BirthDate;
         }
     }
 }
