@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApiDemo.Models;
+using ApiDemo.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiDemo.Controllers

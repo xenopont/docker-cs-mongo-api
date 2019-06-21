@@ -14,10 +14,5 @@ namespace ApiDemo.Models
         public string Password { get; set; }
         [BsonElement("age")]
         public int Age { get; set; }
-
-        public override string ToString()
-        {
-            return "User (" + Id + "): " + Name + " of " + Age;
-        }
     }
 }

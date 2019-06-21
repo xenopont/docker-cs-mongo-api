@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using ApiDemo.Models;
 using MongoDB.Driver;
 
-namespace ApiDemo
+namespace ApiDemo.Services
 {
     public class Database
     {
@@ -13,7 +13,7 @@ namespace ApiDemo
         private const string DbName = "cs-api-demo";
 
         private IMongoClient _client;
-        private IMongoClient MongoClient => _client ?? (_client = new MongoClient("mongodb://172.17.0.4:27017"));
+        private IMongoClient MongoClient => _client ?? (_client = new MongoClient("mongodb://localhost:27017"));
 
         private IMongoDatabase _db;
         private IMongoDatabase MongoDatabase => _db ?? (_db = MongoClient.GetDatabase(DbName));

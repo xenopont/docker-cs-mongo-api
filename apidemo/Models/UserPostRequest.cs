@@ -1,6 +1,6 @@
 using System;
 
-namespace ApiDemo
+namespace ApiDemo.Models
 {
     public class UserPostRequest
     {
