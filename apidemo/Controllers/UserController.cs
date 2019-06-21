@@ -18,9 +18,13 @@ namespace ApiDemo.Controllers
         }
 
         [HttpPost]
-        public ActionResult<string> CreateUser(UserPostRequest request)
+        public async Task<ActionResult<string>> CreateUser(UserPostRequest request)
         {
-            
+            List<string> validationResult = request.Validate();
+            if (validationResult.Count > 0)
+            {
+                return new BadRequestObjectResult(validationResult);
+            }
             //Database.Db.Create(user);
             return request.ToString();
         }

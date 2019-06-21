@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace ApiDemo.Models
 {
@@ -8,10 +9,12 @@ namespace ApiDemo.Models
         public string Password { get; set; } = "";
         public string BirthDate { get; set; } = DateTime.MaxValue.ToString();
 
-        public bool Validate()
+        public List<string> Validate()
         {
+            List<string> errorMessages = new List<string>();
+            errorMessages.Add("I don't like the request");
             
-            return true;
+            return errorMessages;
         }
 
         public override string ToString()
