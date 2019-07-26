@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using ApiDemo.Models;
 using ApiDemo.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiDemo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController
+    public class UsersController
     {
         [HttpGet]
         public async Task<ActionResult<List<User>>> UserList()
@@ -23,7 +25,9 @@ namespace ApiDemo.Controllers
             List<string> validationResult = request.Validate();
             if (validationResult.Count > 0)
             {
-                return new BadRequestObjectResult(validationResult);
+                ObjectResult response = new ObjectResult(validationResult);
+                response.StatusCode = 400;
+                return response;
             }
             //Database.Db.Create(user);
             return request.ToString();
