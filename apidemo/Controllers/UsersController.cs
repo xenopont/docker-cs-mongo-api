@@ -25,12 +25,13 @@ namespace ApiDemo.Controllers
             List<string> validationResult = request.Validate();
             if (validationResult.Count > 0)
             {
-                ObjectResult response = new ObjectResult(validationResult);
+                return new BadRequestObjectResult(validationResult);
+                /*ObjectResult response = new ObjectResult(validationResult);
                 response.StatusCode = 400;
-                return response;
+                return response;*/
             }
             //Database.Db.Create(user);
-            return request.ToString();
+            return new OkObjectResult(request.ToString());
         }
     }
 }

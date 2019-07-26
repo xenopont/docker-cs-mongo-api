@@ -1,18 +1,35 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace ApiDemo.Models
 {
     public class UserPostRequest
     {
-        public string Name { get; set; } = "";
-        public string Password { get; set; } = "";
-        public string BirthDate { get; set; } = DateTime.MaxValue.ToString();
+        private const string StringNoDataProvided = "no data provided";
+
+        public string Name { get; set; } = StringNoDataProvided;
+        public string Password { get; set; } = StringNoDataProvided;
+        public string BirthDate { get; set; } = StringNoDataProvided;
 
         public List<string> Validate()
         {
             List<string> errorMessages = new List<string>();
-            errorMessages.Add("I don't like the request");
+
+            if (Name == StringNoDataProvided)
+            {
+                errorMessages.Add("User Name is not provided");
+            }
+
+            if (Password == StringNoDataProvided)
+            {
+                errorMessages.Add("Password is not provided");
+            }
+
+            if (BirthDate == StringNoDataProvided)
+            {
+                errorMessages.Add("Birth Date is not provided");
+            }
             
             return errorMessages;
         }
