@@ -23,6 +23,18 @@ namespace ApiDemo.Services
 
         public async Task<List<User>> UserList() => await Collection.Find(user => true).ToListAsync();
 
-        public async void Create(User doc) => await Collection.InsertOneAsync(doc);
+        public async Task<bool> Create(User doc)
+        {
+            try
+            {
+                await Collection.InsertOneAsync(doc, new InsertOneOptions {BypassDocumentValidation = false});
+            }
+            catch (MongoWriteException)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

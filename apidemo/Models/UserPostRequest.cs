@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace ApiDemo.Models
 {
@@ -14,29 +13,25 @@ namespace ApiDemo.Models
 
         public List<string> Validate()
         {
-            List<string> errorMessages = new List<string>();
-
+            var errorMessages = new List<string>();
             if (Name == StringNoDataProvided)
             {
                 errorMessages.Add("User Name is not provided");
             }
-
             if (Password == StringNoDataProvided)
             {
                 errorMessages.Add("Password is not provided");
             }
-
             if (BirthDate == StringNoDataProvided)
             {
                 errorMessages.Add("Birth Date is not provided");
             }
+            if (!DateTime.TryParse(BirthDate, out var d))
+            {
+                errorMessages.Add("Birth Date is of invalid format");
+            }
             
             return errorMessages;
-        }
-
-        public override string ToString()
-        {
-            return "Name: " + Name + "; Pass: " + Password + "; Birthdate: " + BirthDate;
         }
     }
 }
