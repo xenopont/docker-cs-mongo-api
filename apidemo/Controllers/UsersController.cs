@@ -42,7 +42,7 @@ namespace ApiDemo.Controllers
             }
             
             user.Password = "*******";
-            return Created("http://www.google.com/", user);
+            return Created("/api/users/" + user.Id, user);
         }
     }
 }
