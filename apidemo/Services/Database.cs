@@ -21,20 +21,8 @@ namespace ApiDemo.Services
         private IMongoCollection<User> _collection;
         private IMongoCollection<User> Collection => _collection ?? (_collection = MongoDatabase.GetCollection<User>("demo-collection"));
 
-        public async Task<List<User>> UserList() => await Collection.Find(user => true).ToListAsync();
+        public async Task<List<User>> UserList() => await Collection.Find(user => true).ToListAsync(); // bool function (user) => { return user.AnyProperty == 'its value'; }
 
-        public async Task<bool> Create(User doc)
-        {
-            try
-            {
-                await Collection.InsertOneAsync(doc, new InsertOneOptions {BypassDocumentValidation = false});
-            }
-            catch (MongoWriteException)
-            {
-                return false;
-            }
-
-            return true;
-        }
+        public async Task Create(User doc) => await Collection.InsertOneAsync(doc, new InsertOneOptions { BypassDocumentValidation = false });
     }
 }

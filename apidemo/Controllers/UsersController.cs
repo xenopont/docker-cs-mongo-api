@@ -5,6 +5,7 @@ using ApiDemo.Models;
 using ApiDemo.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 
 namespace ApiDemo.Controllers
 {
@@ -13,10 +14,20 @@ namespace ApiDemo.Controllers
     public class UsersController : ControllerBase
     {
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<List<User>>> UserList()
         {
-            List<User> list = await Database.Db.UserList();
-            return list;
+            try
+            {
+                return await Database.Db.UserList();
+            }
+            catch (MongoException)
+            {
+                // oh no!
+            }
+
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         [HttpPost]
@@ -36,11 +47,16 @@ namespace ApiDemo.Controllers
                 Password = request.Password,
                 Age = (int)((DateTime.Now - DateTime.Parse(request.BirthDate)).TotalDays / 365.0),
             };
-            if (!await Database.Db.Create(user))
+
+            try
+            {
+                await Database.Db.Create(user);
+            }
+            catch (MongoWriteException)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            
+
             user.Password = "*******";
             return Created("/api/users/" + user.Id, user);
         }
