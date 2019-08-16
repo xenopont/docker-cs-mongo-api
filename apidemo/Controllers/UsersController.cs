@@ -6,6 +6,7 @@ using ApiDemo.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using MongoDB.Bson;
 
 namespace ApiDemo.Controllers
 {
@@ -28,6 +29,36 @@ namespace ApiDemo.Controllers
             }
 
             return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
+        [HttpGet("{userId}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<User>> GetUserDetails(string userId)
+        {
+            if (!ObjectId.TryParse(userId, out ObjectId objectId))
+            {
+                return new BadRequestObjectResult(new List<string> { "Invalid user ID" });
+            }
+            
+            User user = null;
+            try
+            {
+                user = await Database.Db.UserDetails(userId);
+            }
+            catch (MongoException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            if (user == null)
+            {
+                return NotFound(null);
+            }
+
+            return user;
         }
 
         [HttpPost]

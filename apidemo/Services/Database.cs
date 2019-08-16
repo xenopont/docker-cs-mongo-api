@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApiDemo.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace ApiDemo.Services
@@ -22,6 +23,7 @@ namespace ApiDemo.Services
         private IMongoCollection<User> Collection => _collection ?? (_collection = MongoDatabase.GetCollection<User>("demo-collection"));
 
         public async Task<List<User>> UserList() => await Collection.Find(user => true).ToListAsync(); // bool function (user) => { return user.AnyProperty == 'its value'; }
+        public async Task<User> UserDetails(string id) => await Collection.Find(user => user.Id == id).SingleOrDefaultAsync();
 
         public async Task Create(User doc) => await Collection.InsertOneAsync(doc, new InsertOneOptions { BypassDocumentValidation = false });
     }
