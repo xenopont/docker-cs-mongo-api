@@ -13,21 +13,29 @@ namespace ApiDemo.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private const string HIDDEN_PASSWORD = "********";
+        
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<List<User>>> UserList()
         {
+            List<User> list = null;
             try
             {
-                return await Database.Db.UserList();
+                list = await Database.Db.UserList();
             }
             catch (MongoException)
             {
-                // oh no!
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            return StatusCode(StatusCodes.Status500InternalServerError);
+            foreach (var user in list)
+            {
+                user.Password = HIDDEN_PASSWORD;
+            }
+
+            return list;
         }
 
         [HttpGet("{userId}")] // the format {userId:length(24)} returns 404 Not Found in case the user ID is invalid instead of meaningful 400 Bad Request
@@ -56,6 +64,8 @@ namespace ApiDemo.Controllers
             {
                 return NotFound(null);
             }
+
+            user.Password = HIDDEN_PASSWORD;
 
             return user;
         }
