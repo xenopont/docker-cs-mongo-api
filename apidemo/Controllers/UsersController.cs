@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApiDemo.Models;
 using ApiDemo.Services;
@@ -31,7 +30,7 @@ namespace ApiDemo.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
-        [HttpGet("{userId}")]
+        [HttpGet("{userId}")] // the format {userId:length(24)} returns 404 Not Found in case the user ID is invalid instead of meaningful 400 Bad Request
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -76,7 +75,7 @@ namespace ApiDemo.Controllers
             {
                 Name = request.Name,
                 Password = request.Password,
-                Age = (int)((DateTime.Now - DateTime.Parse(request.BirthDate)).TotalDays / 365.0),
+                Age = Converter.BirthdateToAge(request.BirthDate),
             };
 
             try
@@ -90,6 +89,36 @@ namespace ApiDemo.Controllers
 
             user.Password = "*******";
             return Created("/api/users/" + user.Id, user);
+        }
+
+        [HttpPut("{userId}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<string>> UpdateUser(string userId, UserPutRequest request)
+        {
+            request.Id = userId;
+            if (!request.IsValid(out List<string> errors))
+            {
+                return new BadRequestObjectResult(errors);
+            }
+
+            int? age = null;
+            if (request.BirthDate != null)
+            {
+                age = Converter.BirthdateToAge(request.BirthDate);
+            }
+
+            try
+            {
+                await Database.Db.Update(request.Id, request.Password, age);
+            }
+            catch (MongoException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return Ok();
         }
     }
 }

@@ -26,5 +26,21 @@ namespace ApiDemo.Services
         public async Task<User> UserDetails(string id) => await Collection.Find(user => user.Id == id).SingleOrDefaultAsync();
 
         public async Task Create(User doc) => await Collection.InsertOneAsync(doc, new InsertOneOptions { BypassDocumentValidation = false });
+
+        public async Task<UpdateResult> Update(string userId, string password = null, int? age = null)
+        {
+            var set = new BsonDocument();
+            if (password != null)
+            {
+                set.Add("password", password);
+            }
+
+            if (age != null)
+            {
+                set.Add("age", age);
+            }
+
+            return await Collection.UpdateOneAsync(u => u.Id == userId, new BsonDocument("$set", set));
+        }
     }
 }
