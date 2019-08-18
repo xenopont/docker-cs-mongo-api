@@ -22,13 +22,13 @@ namespace ApiDemo.Models
 
             if (Id == null || !ObjectId.TryParse(Id, out var o))
             {
-                errors.Add("User ID is of invalid format");
+                errors.Add("Invalid User ID");
                 return false;
             }
 
             if (BirthDate != null && !DateTime.TryParse(BirthDate, out DateTime d))
             {
-                errors.Add("Birth Date is of invalid format");
+                errors.Add("Invalid Birth Date format");
             }
 
             if (Password == "")

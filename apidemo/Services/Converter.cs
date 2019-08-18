@@ -2,7 +2,7 @@ using System;
 
 namespace ApiDemo.Services
 {
-    public class Converter
+    public static class Converter
     {
         public static int BirthdateToAge(string date)
         {

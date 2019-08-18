@@ -13,7 +13,7 @@ namespace ApiDemo.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private const string HIDDEN_PASSWORD = "********";
+        private const string HiddenPassword = "********";
         
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -32,7 +32,7 @@ namespace ApiDemo.Controllers
 
             foreach (var user in list)
             {
-                user.Password = HIDDEN_PASSWORD;
+                user.Password = HiddenPassword;
             }
 
             return list;
@@ -65,7 +65,7 @@ namespace ApiDemo.Controllers
                 return NotFound(null);
             }
 
-            user.Password = HIDDEN_PASSWORD;
+            user.Password = HiddenPassword;
 
             return user;
         }
@@ -97,7 +97,7 @@ namespace ApiDemo.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            user.Password = "*******";
+            user.Password = HiddenPassword;
             return Created("/api/users/" + user.Id, user);
         }
 
