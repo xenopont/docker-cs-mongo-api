@@ -4,6 +4,8 @@
 .vs/
 dist/*
 !dist/.gitkeep
+published/*
+!published/.gitkeep
 .vscode
 */obj/*
 */bin/*
