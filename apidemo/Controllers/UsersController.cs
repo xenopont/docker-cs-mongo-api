@@ -121,14 +121,24 @@ namespace ApiDemo.Controllers
 
             try
             {
-                await Database.Db.Update(request.Id, request.Password, age);
+                UpdateResult res = await Database.Db.Update(request.Id, request.Password, age);
+                if (res.IsAcknowledged)
+                {
+                    if (res.ModifiedCount == 0)
+                    {
+                        return NotFound(null);
+                    }
+
+                    return Ok(null);
+                }
+                // server error
             }
             catch (MongoException)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                // server error
             }
 
-            return Ok();
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         [HttpDelete("{userId}")]
