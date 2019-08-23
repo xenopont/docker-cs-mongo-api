@@ -1,0 +1,19 @@
+{
+  "version": "3.7",
+  "services": {
+    "mongo": {
+      "container_name": "cs-api-mongo",
+      "image": "mongo",
+      "ports": [ "27017:27017" ]
+    },
+    "cs-api-app": {
+      "container_name": "cs-api-app",
+      "image": "cs-api-app-image",
+      "ports": [ "5555:5555" ],
+      "volumes": [ "${PWD}:/app" ],
+      "environment": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
