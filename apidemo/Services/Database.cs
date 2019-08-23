@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApiDemo.Models;
@@ -42,5 +43,7 @@ namespace ApiDemo.Services
 
             return await Collection.UpdateOneAsync(u => u.Id == userId, new BsonDocument("$set", set));
         }
+
+        public async Task<DeleteResult> Delete(string id) => await Collection.DeleteOneAsync(u => u.Id == id);
     }
 }

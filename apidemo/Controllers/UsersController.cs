@@ -130,5 +130,39 @@ namespace ApiDemo.Controllers
 
             return Ok();
         }
+
+        [HttpDelete("{userId}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<string>> DeleteUser(string userId)
+        {
+            if (!ObjectId.TryParse(userId, out ObjectId o))
+            {
+                return new BadRequestObjectResult(new List<string> { "Invalid User ID" });
+            }
+
+            try
+            {
+                DeleteResult res = await Database.Db.Delete(userId);
+                if (res.IsAcknowledged)
+                {
+                    if (res.DeletedCount == 0)
+                    {
+                        return NotFound(null); // null to remove the default response
+                    }
+
+                    return NoContent(); // the proper return is here :)
+                }
+                // server error
+            }
+            catch (MongoException)
+            {
+                // server error
+            }
+
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
     }
 }
