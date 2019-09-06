@@ -1,6 +1,6 @@
 .gitignore
 .idea/
-.DS_Store
+*/.DS_Store
 .vs/
 dist/*
 .vscode
